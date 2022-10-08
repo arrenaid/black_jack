@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 
 class CardsGridView extends StatelessWidget {
   CardsGridView({
-    required this.cards, required this.isDealer, required this.finish,
+    required this.cards, required this.isDealer, required this.finish, required this.controller,
   });
   final List<String> cards;
   final bool isDealer;
   final bool finish;
+  final AnimationController controller;
+
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +25,16 @@ class CardsGridView extends StatelessWidget {
           clipBehavior: Clip.none,
           shrinkWrap: true,
           itemBuilder: (context, index) {
-            return isDealer && index == 0 && !finish
-                ? Container( height: 50, child: BlackJack.coverCard)
-                : Container( height: 50, child: Image.asset(cards[index]));
+            return SlideTransition(
+              position: isDealer?
+                   controller.drive(Tween<Offset>(begin: const Offset(0.0, 0.0), end: const Offset(0.0, -1.0)))
+                  : controller.drive(Tween<Offset>(begin: const Offset(0.0, 0.0), end: const Offset(0.0, 1.0))
+              ),
+              child: FadeTransition(opacity: controller.drive(Tween(begin: 1.0, end: 0.0)),
+              child:isDealer && index == 0 && !finish
+                  ?  Container( height: 50, child: BlackJack.coverCard)
+                  : Container( height: 50, child: Image.asset(cards[index]))),
+            );
           }),
     );
   }
