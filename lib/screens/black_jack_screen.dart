@@ -34,6 +34,7 @@ class BlackJackScreenState extends State<BlackJackScreen>
 
   void startGame() async {
     _controller.forward().whenComplete(() {
+      context.read<JackCubit>().restart();
       setState(() {
       isGameStart = true;
       // isFinish = false;
@@ -124,7 +125,7 @@ class BlackJackScreenState extends State<BlackJackScreen>
                       child: FadeTransition(
                         opacity: _controller.drive(Tween(begin: 1.0, end: 0.0)),
                         child: Text(
-                          "${state.blackJack.dealer.score} - Dealer VS Player - ${state.blackJack.player.score}",
+                          "${state.blackJack.dealer.score} - Dealer \n\t\t\t\t\t\t\tVS \n\t\t\t\t\tPlayer - ${state.blackJack.player.score}",
                           style: state.blackJack.player.score > 21 ? loseTS : sampleTS,
                         ),
                       ),

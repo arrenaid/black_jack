@@ -7,7 +7,13 @@ part 'jack_state.dart';
 class JackCubit extends Cubit<JackState>{
   JackCubit() : super(JackState(status: JackStatus.initial,
       blackJack: BlackJack(), isFinish: false, score: 0));
-  hit(){
+  void restart(){
+    emit(state.copyWith(status: JackStatus.initial,
+      blackJack: BlackJack(),
+      isFinish: false,
+    ));
+  }
+  void hit(){
     emit(state.copyWith(status: JackStatus.loading));
     state.blackJack.hitPlayer();
     emit(state.copyWith(status: JackStatus.loaded));
