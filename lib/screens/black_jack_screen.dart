@@ -24,9 +24,7 @@ class BlackJackScreenState extends State<BlackJackScreen>
   bool isVisibleButton = false;
   bool isVisibleFinalButton = false;
 
-  // late BlackJack _blackJack;
-  // bool isFinish = false;
-  // int _score = 0;
+
 
   void _showModalBottomSheet(BuildContext context) {
     showModalBottomSheet(
@@ -71,15 +69,6 @@ class BlackJackScreenState extends State<BlackJackScreen>
         });
       });
     });
-
-    // _controller.forward().whenComplete(() {
-    //   context.read<JackCubit>().dealer();
-    //   _controller.reverse();
-    // });
-    // _controller.forward().whenComplete(() {
-    //   context.read<JackCubit>().player();
-    //   _controller.reverse();
-    // });
   }
 
   @override
@@ -94,20 +83,15 @@ class BlackJackScreenState extends State<BlackJackScreen>
     );
     _controller.reset();
     super.initState();
-    //playingCards.addAll(deckOfCards);
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _controllerSize.dispose();
     super.dispose();
   }
 
-  // void hit() async {
-  //   setState(() {
-  //     _blackJack.hitPlayer();
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {

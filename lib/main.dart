@@ -1,5 +1,8 @@
 import 'package:black_jack/cubit/jack_cubit.dart';
 import 'package:black_jack/screens/black_jack_screen.dart';
+import 'package:black_jack/screens/game_screen.dart';
+import 'package:black_jack/screens/start_screen.dart';
+import 'package:black_jack/screens/winner_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,7 +20,12 @@ class MyApp extends StatelessWidget {
       create: (context) => JackCubit(),
       child: MaterialApp(
         title: 'Black Jack',
-        home: BlackJackScreen(),
+        home: StartScreen(),
+        routes: {
+          StartScreen.name: (context) => StartScreen(),
+          GameScreen.name: (context) => GameScreen(),
+          WinnerScreen.name: (context) => WinnerScreen(),
+        },
       ),
     );
   }
