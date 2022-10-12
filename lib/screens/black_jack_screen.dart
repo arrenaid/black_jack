@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:black_jack/black_jack.dart';
 import 'package:black_jack/constants.dart';
 import 'package:black_jack/cubit/jack_cubit.dart';
+import 'package:black_jack/screens/horisontal_animated_list_view_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,9 +17,13 @@ class BlackJackScreen extends StatefulWidget {
 }
 
 class BlackJackScreenState extends State<BlackJackScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late AnimationController _controller;
+  late AnimationController _controllerSize;
   bool isGameStart = false;
+  bool isVisibleButton = false;
+  bool isVisibleFinalButton = false;
+
   // late BlackJack _blackJack;
   // bool isFinish = false;
   // int _score = 0;
@@ -27,8 +32,8 @@ class BlackJackScreenState extends State<BlackJackScreen>
     showModalBottomSheet(
         context: context,
         builder: (context) => BottomSheetContent(
-              game: context.read<JackCubit>().state.blackJack,//_blackJack,
-              score: context.read<JackCubit>().state.score,//_score,
+              game: context.read<JackCubit>().state.blackJack, //_blackJack,
+              score: context.read<JackCubit>().state.score, //_score,
             ));
   }
 
@@ -36,12 +41,45 @@ class BlackJackScreenState extends State<BlackJackScreen>
     _controller.forward().whenComplete(() {
       context.read<JackCubit>().restart();
       setState(() {
-      isGameStart = true;
-      // isFinish = false;
-      // _blackJack = BlackJack();
-        _controller.reverse();
+        isGameStart = true;
+        // isFinish = false;
+        // _blackJack = BlackJack();
+        _controller.reverse().whenComplete(() {
+          _controller.forward().whenComplete(() {
+            context.read<JackCubit>().dealer();
+            _controller.reverse().whenComplete(() {
+              _controller.forward().whenComplete(() {
+                context.read<JackCubit>().player();
+                _controller.reverse().whenComplete(() {
+                  _controller.forward().whenComplete(() {
+                    context.read<JackCubit>().dealer();
+                    _controller.reverse().whenComplete(() {
+                      _controller.forward().whenComplete(() {
+                        context.read<JackCubit>().player();
+                        _controller.reverse();
+                        setState(() {
+                          isVisibleButton = true;
+                          _controllerSize.forward();//.whenComplete(() => _controllerSize.reset());
+                        });
+                      });
+                    });
+                  });
+                });
+              });
+            });
+          });
+        });
       });
     });
+
+    // _controller.forward().whenComplete(() {
+    //   context.read<JackCubit>().dealer();
+    //   _controller.reverse();
+    // });
+    // _controller.forward().whenComplete(() {
+    //   context.read<JackCubit>().player();
+    //   _controller.reverse();
+    // });
   }
 
   @override
@@ -50,6 +88,11 @@ class BlackJackScreenState extends State<BlackJackScreen>
       vsync: this,
       duration: const Duration(milliseconds: 250),
     );
+    _controllerSize = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 250),
+    );
+    _controller.reset();
     super.initState();
     //playingCards.addAll(deckOfCards);
   }
@@ -68,142 +111,184 @@ class BlackJackScreenState extends State<BlackJackScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<JackCubit,JackState>(
-      buildWhen:  (prevState,currentState) => (prevState!=currentState),
-      builder: (context, state) {return Scaffold(
-        backgroundColor: Colors.teal[200],
-        body: !isGameStart
-            ? Center(
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: const FractionalOffset(0.5, 0.8),
-                      child: MaterialButton(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 30),
-                        elevation: 15,
-                        onPressed: startGame,
-                        child: const Text("Start Black Jack", style: sampleTS),
-                        color: Colors.brown[300],
-                      ),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+    return BlocBuilder<JackCubit, JackState>(
+        buildWhen: (prevState, currentState) => (prevState != currentState),
+        builder: (context, state) {
+          return Scaffold(
+            backgroundColor: Colors.teal[200],
+            body: !isGameStart
+                ? Center(
+                    child: Stack(
                       children: [
-                        SlideTransition(
-                            //alignment: _controller.drive(Tween(begin: Alignment.topCenter, end: Alignment.bottomCenter)),
-                            position: _controller.drive(Tween<Offset>(
-                                begin: const Offset(0.0, 0.0),
-                                end: const Offset(0.0, 1.0))),
-                            child: Image(image: BlackJack.coverCard.image)),
-                      ],
-                    ),
-                  ],
-                ),
-              )
-            : SafeArea(
-                child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ////DEALER
-                    Column(
-                      children: [
-                        CardsGridView(
-                          cards: state.blackJack.dealer.cards,//context.read<JackCubit>().state.blackJack.dealer.cards,//_blackJack.dealer.cards,
-                          isDealer: true,
-                          finish: state.isFinish,//context.read<JackCubit>().state.isFinish,
-                          controller: _controller,
-                        ),
-                      ],
-                    ),
-                    ////SCORE
-                    Container(
-                      //color: Colors.red[300],
-                      padding: EdgeInsets.all(20),
-                      margin: EdgeInsets.all(5),
-                      child: FadeTransition(
-                        opacity: _controller.drive(Tween(begin: 1.0, end: 0.0)),
-                        child: Text(
-                          "${state.blackJack.dealer.score} - Dealer \n\t\t\t\t\t\t\tVS \n\t\t\t\t\tPlayer - ${state.blackJack.player.score}",
-                          style: state.blackJack.player.score > 21 ? loseTS : sampleTS,
-                        ),
-                      ),
-                    ),
-
-                    Column(
-                      children: [
-                        CardsGridView(
-                            cards: state.blackJack.player.cards,
-                            isDealer: false,
-                            finish: state.isFinish,
-                          controller: _controller,
-                        ),
-                      ],
-                    ),
-                    IntrinsicWidth(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          MaterialButton(
-                            onPressed: () {
-                              _controller.forward().whenComplete(() {
-                                if (!state.isFinish) {
-                                  context.read<JackCubit>().hit();//hit();
-                                } else {
-                                  _showModalBottomSheet(context);
-                                  //sleep(Duration(seconds: 1));
-                                  setState(() {
-                                    isGameStart = false;
-                                  });
-                                }
-                                _controller.reverse();
-                              });
-                            },
-                            child: const Text(
-                              "Hit",
-                              style: sampleTS,
-                            ),
+                        Align(
+                          alignment: const FractionalOffset(0.5, 0.8),
+                          child: MaterialButton(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 30),
+                            elevation: 15,
+                            onPressed: startGame,
+                            child:
+                                const Text("Start Black Jack", style: sampleTS),
                             color: Colors.brown[300],
                           ),
-                          MaterialButton(
-                            onPressed: () {
-                              _controller.forward().whenComplete(() {
-                                context.read<JackCubit>().stand();
-                                _controller.reverse().whenComplete(() {
-                                  setState(() {
-                                    sleep(Duration(seconds: 1));
-                                    _showModalBottomSheet(context);
-                                    isGameStart = false;
-                                  });
-                                });
-                              });
-                            },
-                            child: const Text(
-                              "Stand",
-                              style: sampleTS,
-                            ),
-                            color: Colors.amber[300],
-                          ),
-                        ],
-                      ),
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SlideTransition(
+                                //alignment: _controller.drive(Tween(begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+                                position: _controller.drive(Tween<Offset>(
+                                    begin: const Offset(0.0, 0.0),
+                                    end: const Offset(0.0, 2.0))),
+                                child: Image(image: BlackJack.coverCard.image)),
+                          ],
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              )),
-      );}
-    );
+                  )
+                : SafeArea(
+                    child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ////DEALER
+                        //CardsGridView(
+                        HorizontalListWidget(
+                          cards: state.blackJack.dealer.cards,
+                          //context.read<JackCubit>().state.blackJack.dealer.cards,//_blackJack.dealer.cards,
+                          isDealer: true,
+                          finish: state.isFinish,
+                          //context.read<JackCubit>().state.isFinish,
+                          controller: _controller,
+                        ),
+                        ////SCORE
+                        Container(
+                          //color: Colors.red[300],
+                          padding: EdgeInsets.all(20),
+                          margin: EdgeInsets.all(5),
+                          child: FadeTransition(
+                            opacity:
+                                _controller.drive(Tween(begin: 1.0, end: 0.0)),
+                            child: Text(
+                              "${state.blackJack.dealer.score} - Dealer \n\t\t\t\t\t\t\tVS \n\t\t\t\t\tPlayer - ${state.blackJack.player.score}",
+                              style: state.blackJack.player.score > 21
+                                  ? loseTS
+                                  : sampleTS,
+                            ),
+                          ),
+                        ),
+                        ////PLAYER
+                        HorizontalListWidget(
+                          cards: state.blackJack.player.cards,
+                          isDealer: false,
+                          finish: state.isFinish,
+                          controller: _controller,
+                        ),
+                        SlideTransition(
+
+                          position: _controllerSize.drive(Tween(begin: Offset(0.0, 1.0),end: Offset(0.0,0.0))),
+                          child: IntrinsicWidth(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                isVisibleButton ? MaterialButton(
+                                  onPressed: () {
+                                    _controller.forward().whenComplete(() {
+                                      if (!state.isFinish) {
+                                        context.read<JackCubit>().hit(); //hit();
+                                      } else {
+                                        _showModalBottomSheet(context);
+                                        //sleep(Duration(seconds: 1));
+                                        setState(() {
+                                          isVisibleFinalButton = true;
+                                          //isGameStart = false;
+                                        });
+                                      }
+                                      _controller.reverse();
+                                    });
+                                  },
+                                  child: const Text(
+                                    "Hit",
+                                    style: sampleTS,
+                                  ),
+                                  color: Colors.brown[300],
+                                ) : Container(height: 30,),
+                                isVisibleFinalButton ? MaterialButton(
+                                  onPressed: () {
+                                    _controller.forward().whenComplete(() {
+                                      _controller.reverse().whenComplete(() {
+                                        _controllerSize.reverse().whenComplete(() {
+                                        setState(() {
+                                          //sleep(Duration(seconds: 1));
+                                          //_showModalBottomSheet(context);
+                                          isVisibleFinalButton = false;
+                                          isVisibleButton = false;
+                                          isGameStart = false;
+                                          });
+                                        });
+                                      });
+                                    });
+                                  },
+                                  child: const Text(
+                                    "...Finishing...",
+                                    style: sampleTS,
+                                  ),
+                                  color: Colors.deepOrange[300],
+                                ) : Container(),
+                                isVisibleButton ? MaterialButton(
+                                  onPressed: () {
+                                    _controller.forward().whenComplete(() {
+                                      context.read<JackCubit>().stand();
+                                      _controller.reset();
+                                      _controller.reset();
+                                      _controller.fling().whenComplete(() {
+                                        _controller.reverse().whenComplete(() {
+                                          _controllerSize.reverse().whenComplete(() {
+                                          setState(() {
+                                            //sleep(Duration(seconds: 1));
+                                            //_showModalBottomSheet(context);
+                                            isVisibleFinalButton = true;
+                                            isVisibleButton = false;
+                                            _controllerSize.forward();
+                                            // _controllerSize.reset();
+                                            // _controllerSize.reverse();
+
+
+                                            });
+                                            //isGameStart = false;
+                                          });
+                                        });
+                                      });
+                                    });
+
+                                  },
+                                  child: const Text(
+                                    "Stand",
+                                    style: sampleTS,
+                                  ),
+                                  color: Colors.amber[300],
+                                ) : Container(height: 30, width: 30,),
+
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )),
+          );
+        });
   }
 
-  // void _stand() {
-  //   setState(() {
-  //     isFinish = true;
-  //     _blackJack.hitDealer();
-  //   });
-  //   _blackJack.winner();
-  //   _score += _blackJack.sessionScore;
-  //   //sleep(Duration(seconds: 1));
-  // }
+// void _stand() {
+//   setState(() {
+//     isFinish = true;
+//     _blackJack.hitDealer();
+//   });
+//   _blackJack.winner();
+//   _score += _blackJack.sessionScore;
+//   //sleep(Duration(seconds: 1));
+// }
 }

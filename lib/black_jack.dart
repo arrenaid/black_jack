@@ -77,6 +77,17 @@ class BlackJack {
     _playingCards = {};
     _playingCards.addAll(deckOfCards);
   }
+  nextDealer(bool isFirst){
+    dealer.cards.add(_addCart());
+    if(!isFirst) dealer.setScore(deckOfCards[dealer.cards.last]!);
+  }
+  nextPlayer(){
+    player.cards.add(_addCart());
+    player.setScore(_updateScore(player));
+  }
+  BlackJack.empty(){
+    init();
+  }
 
   BlackJack() {
     try {

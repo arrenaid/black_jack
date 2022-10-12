@@ -1,6 +1,5 @@
 import 'package:black_jack/black_jack.dart';
 import 'package:flutter/material.dart';
-
 class CardsGridView extends StatelessWidget {
   CardsGridView({
     required this.cards,

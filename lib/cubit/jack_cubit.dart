@@ -9,10 +9,21 @@ class JackCubit extends Cubit<JackState>{
       blackJack: BlackJack(), isFinish: false, score: 0));
   void restart(){
     emit(state.copyWith(status: JackStatus.initial,
-      blackJack: BlackJack(),
+      blackJack: BlackJack.empty(),
       isFinish: false,
     ));
   }
+  void dealer(){
+    emit(state.copyWith(status: JackStatus.loading));
+    state.blackJack.nextDealer(state.blackJack.dealer.cards.isEmpty);
+    emit(state.copyWith(status: JackStatus.loaded));
+  }
+  void player(){
+    emit(state.copyWith(status: JackStatus.loading));
+    state.blackJack.nextPlayer();
+    emit(state.copyWith(status: JackStatus.loaded));
+  }
+
   void hit(){
     emit(state.copyWith(status: JackStatus.loading));
     state.blackJack.hitPlayer();
@@ -27,5 +38,4 @@ class JackCubit extends Cubit<JackState>{
     int resScore = state.score + state.blackJack.sessionScore;
     emit(state.copyWith(score:  resScore,status: JackStatus.loaded));
   }
-
 }
