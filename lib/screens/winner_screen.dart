@@ -33,6 +33,23 @@ class _WinnerScreenState extends State<WinnerScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+
+                  Container(
+                    height: 100,
+                    alignment: Alignment.center,
+                    child: Image.asset("chip/chip500.png",),
+                  ),
+                  Container(
+                      height: 100,
+                      alignment: Alignment.center,
+                      child: Image.asset("chip/chip300.png",)
+                  ),
+                  Container(
+                      height: 100,
+                      alignment: Alignment.center,
+                      child: Image.asset("chip/chip100.png",)
+                  ),
+
                   SizedBox(
                     height: 70,
                     child: Center(
