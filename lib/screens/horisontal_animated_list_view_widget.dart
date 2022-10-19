@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:black_jack/cubit/jack_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,11 +54,11 @@ class _HorizontalListWidgetState extends State<HorizontalListWidget> {
     return BlocBuilder<JackCubit, JackState>(
         buildWhen: (prevState, currentState) => (prevState != currentState && update(widget.isDealer
               ? currentState.blackJack.dealer.cards
-              : currentState.blackJack.player.cards)),
+              : currentState.blackJack.get().cards)),
         builder: (context, state) {
           update(widget.isDealer
             ? state.blackJack.dealer.cards
-            : state.blackJack.player.cards);
+            : state.blackJack.get().cards);
           return Container(
             padding: EdgeInsets.only(left: 50.0),
             height: 250,

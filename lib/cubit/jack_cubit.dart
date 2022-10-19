@@ -6,16 +6,16 @@ part 'jack_state.dart';
 
 class JackCubit extends Cubit<JackState>{
   JackCubit() : super(JackState(status: JackStatus.initial,
-      blackJack: BlackJack.empty(), isFinish: false, score: 0));
+      blackJack: BlackJackList(1), isFinish: false, score: 0,numberPlayers: 1));
   void restart(){
     emit(state.copyWith(status: JackStatus.initial,
-      blackJack: BlackJack.empty(),
+      blackJack:BlackJackList(state.numberPlayers),// BlackJackOne.empty(),
       isFinish: false,
     ));
   }
   void dealer(){
     emit(state.copyWith(status: JackStatus.loading));
-    state.blackJack.nextDealer(state.blackJack.dealer.cards.isEmpty);
+    state.blackJack.nextDealer(state.blackJack.dealer.cards.isNotEmpty);
     emit(state.copyWith(status: JackStatus.loaded));
   }
   void player(){
@@ -35,7 +35,13 @@ class JackCubit extends Cubit<JackState>{
     state.isFinish = true;
     state.blackJack.hitDealer();
     state.blackJack.winner();
-    int resScore = state.score + state.blackJack.sessionScore;
+    int resScore = state.score + state.blackJack.listPlayer[0].sessionScore;//state.blackJack.sessionScore;
     emit(state.copyWith(score:  resScore,status: JackStatus.loaded));
+  }
+  void changeNumberOfPlayers(int value){
+    emit(state.copyWith(status: JackStatus.loading));
+    if(value < 1 ) value = 1;
+    if(value > 6) value = 6;
+    emit(state.copyWith(status: JackStatus.loaded, numberPlayers: value));
   }
 }

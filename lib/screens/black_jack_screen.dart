@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:black_jack/black_jack.dart';
 import 'package:black_jack/constants.dart';
 import 'package:black_jack/cubit/jack_cubit.dart';
@@ -7,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bottom_sheet.dart';
-import 'cards_gridview_widget.dart';
 
 class BlackJackScreen extends StatefulWidget {
   const BlackJackScreen({Key? key}) : super(key: key);
@@ -154,8 +152,8 @@ class BlackJackScreenState extends State<BlackJackScreen>
                             opacity:
                                 _controller.drive(Tween(begin: 1.0, end: 0.0)),
                             child: Text(
-                              "${state.blackJack.dealer.score} - Dealer \n\t\t\t\t\t\t\tVS \n\t\t\t\t\tPlayer - ${state.blackJack.player.score}",
-                              style: state.blackJack.player.score > 21
+                              "${state.blackJack.dealer.score} - Dealer \n\t\t\t\t\t\t\tVS \n\t\t\t\t\tPlayer - ${state.blackJack.get().score}",
+                              style: state.blackJack.get().score > 21
                                   ? loseTS
                                   : sampleTS,
                             ),
@@ -163,7 +161,7 @@ class BlackJackScreenState extends State<BlackJackScreen>
                         ),
                         ////PLAYER
                         HorizontalListWidget(
-                          cards: state.blackJack.player.cards,
+                          cards: state.blackJack.get().cards,
                           isDealer: false,
                           finish: state.isFinish,
                           controller: _controller,

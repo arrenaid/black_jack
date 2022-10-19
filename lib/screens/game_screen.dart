@@ -2,7 +2,6 @@
 import 'package:black_jack/constants.dart';
 import 'package:black_jack/cubit/jack_cubit.dart';
 import 'package:black_jack/screens/horisontal_animated_list_view_widget.dart';
-import 'package:black_jack/screens/start_screen.dart';
 import 'package:black_jack/screens/winner_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -105,8 +104,8 @@ class _GameScreenState extends State<GameScreen>
                           child: Text(
                             "${state.blackJack.dealer
                                 .score} - Dealer \n\t\t\t\t\t\t\tVS \n\t\t\t\t\tPlayer - ${state
-                                .blackJack.player.score}",
-                            style: state.blackJack.player.score > 21
+                                .blackJack.get().score}",
+                            style: state.blackJack.get().score > 21
                                 ? loseTS
                                 : sampleTS,
                           ),
@@ -114,7 +113,7 @@ class _GameScreenState extends State<GameScreen>
                       ),
                       ////PLAYER
                       HorizontalListWidget(
-                        cards: state.blackJack.player.cards,
+                        cards: state.blackJack.get().cards,
                         isDealer: false,
                         finish: state.isFinish,
                         controller: _controller,
