@@ -1,16 +1,17 @@
-# black_jack
+# Black Jack
 
-A new Flutter project.
+Simple Flutter app to play blackjack.
 
-## Getting Started
+## Features
+Up to 6 players can be added.
 
-This project is a starting point for a Flutter application.
+## Screenshots
 
-A few resources to get you started if this is your first Flutter project:
+![black_jack_s1](https://user-images.githubusercontent.com/28564411/201881458-b8206e6c-5e58-4119-9b95-e1f266feedfd.jpg)
+![black_jack_s2](https://user-images.githubusercontent.com/28564411/201881461-d2603289-8789-47cd-9669-216e001d91a2.jpg)
+![black_jack_s3](https://user-images.githubusercontent.com/28564411/201881466-08d53cdc-5bda-4c6b-9e0f-e596704c3a91.jpg)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## IOS 
+Application should build for IOS but it's untested.
+
