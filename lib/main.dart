@@ -1,5 +1,4 @@
 import 'package:black_jack/cubit/jack_cubit.dart';
-import 'package:black_jack/screens/black_jack_screen.dart';
 import 'package:black_jack/screens/game_screen.dart';
 import 'package:black_jack/screens/start_screen.dart';
 import 'package:black_jack/screens/winner_screen.dart';
@@ -13,7 +12,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return BlocProvider<JackCubit>(

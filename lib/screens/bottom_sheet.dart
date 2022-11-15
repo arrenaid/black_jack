@@ -6,8 +6,6 @@ import '../constants.dart';
 
 class BottomSheetContent extends StatelessWidget {
   final BlackJackList game;
-  // final int dScore;
-  // final int pScore;
    final int score;
 
   const BottomSheetContent({Key? key, required this.game, required this.score})
@@ -63,7 +61,6 @@ class BottomSheetContent extends StatelessWidget {
 class BottomSheetSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // String result = "game.winner()";
     return BlocBuilder<JackCubit,JackState>(
       builder: (context,state) {
         final BlackJackList game = state.blackJack;
@@ -110,7 +107,6 @@ class BottomSheetSettings extends StatelessWidget {
                     ],
                   ),
                 ),
-
               ],
             ),
           ),

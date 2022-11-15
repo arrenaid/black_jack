@@ -38,8 +38,6 @@ class BlackJackScreenState extends State<BlackJackScreen>
       context.read<JackCubit>().restart();
       setState(() {
         isGameStart = true;
-        // isFinish = false;
-        // _blackJack = BlackJack();
         _controller.reverse().whenComplete(() {
           _controller.forward().whenComplete(() {
             context.read<JackCubit>().dealer();
@@ -118,7 +116,6 @@ class BlackJackScreenState extends State<BlackJackScreen>
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             SlideTransition(
-                                //alignment: _controller.drive(Tween(begin: Alignment.topCenter, end: Alignment.bottomCenter)),
                                 position: _controller.drive(Tween<Offset>(
                                     begin: const Offset(0.0, 0.0),
                                     end: const Offset(0.0, 2.0))),
@@ -134,18 +131,14 @@ class BlackJackScreenState extends State<BlackJackScreen>
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         ////DEALER
-                        //CardsGridView(
                         HorizontalListWidget(
                           cards: state.blackJack.dealer.cards,
-                          //context.read<JackCubit>().state.blackJack.dealer.cards,//_blackJack.dealer.cards,
                           isDealer: true,
                           finish: state.isFinish,
-                          //context.read<JackCubit>().state.isFinish,
                           controller: _controller,
                         ),
                         ////SCORE
                         Container(
-                          //color: Colors.red[300],
                           padding: EdgeInsets.all(20),
                           margin: EdgeInsets.all(5),
                           child: FadeTransition(
@@ -229,17 +222,10 @@ class BlackJackScreenState extends State<BlackJackScreen>
                                         _controller.reverse().whenComplete(() {
                                           _controllerSize.reverse().whenComplete(() {
                                           setState(() {
-                                            //sleep(Duration(seconds: 1));
-                                            //_showModalBottomSheet(context);
                                             isVisibleFinalButton = true;
                                             isVisibleButton = false;
                                             _controllerSize.forward();
-                                            // _controllerSize.reset();
-                                            // _controllerSize.reverse();
-
-
                                             });
-                                            //isGameStart = false;
                                           });
                                         });
                                       });
@@ -252,7 +238,6 @@ class BlackJackScreenState extends State<BlackJackScreen>
                                   ),
                                   color: Colors.amber[300],
                                 ) : Container(height: 30, width: 30,),
-
                               ],
                             ),
                           ),
@@ -263,14 +248,4 @@ class BlackJackScreenState extends State<BlackJackScreen>
           );
         });
   }
-
-// void _stand() {
-//   setState(() {
-//     isFinish = true;
-//     _blackJack.hitDealer();
-//   });
-//   _blackJack.winner();
-//   _score += _blackJack.sessionScore;
-//   //sleep(Duration(seconds: 1));
-// }
 }

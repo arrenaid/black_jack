@@ -85,7 +85,6 @@ class _StartScreenState extends State<StartScreen> with SingleTickerProviderStat
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SlideTransition(
-                  //alignment: _controller.drive(Tween(begin: Alignment.topCenter, end: Alignment.bottomCenter)),
                     position: _controller.drive(Tween<Offset>(
                         begin: const Offset(0.0, 0.0),
                         end: const Offset(0.0, 2.0))),

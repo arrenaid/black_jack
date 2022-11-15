@@ -115,7 +115,9 @@ class BlackJack {
     player.cards.add(_addCart());
     if(!isDealer) {
       player.setScore(_updateScore(player));
-    }else if(isNotFirstDealer) player.setScore(deckOfCards[player.cards.last]!);
+    }else if(isNotFirstDealer) {
+      player.setScore(deckOfCards[player.cards.last]!);
+    }
     return player;
   }
 

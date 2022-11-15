@@ -31,13 +31,7 @@ class _HorizontalListWidgetState extends State<HorizontalListWidget> {
     imageList = [];
     super.initState();
   }
-
-  // void insert(String item) {
-  //   _list.insert(item);
-  // }
   bool update(List<String> items) {
-    //imageList = [];
-    //int index = 0;
     if (imageList.length == items.length) return true;
     for (var item in items) {
       if (false == imageList.contains(item)) {
@@ -73,8 +67,6 @@ class _HorizontalListWidgetState extends State<HorizontalListWidget> {
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (BuildContext context, int index,
                       Animation<double> animation) {
-                    // return ScaleTransition(scale: widget.controller.drive(Tween(begin: 3.8, end:1)),
-                    // alignment: widget.controller.drive(Tween(begin: Alignment.topLeft, end: Alignment.center)),
                     return SlideTransition(
                       position: animation.drive(Tween(begin: Offset(1.0,-3.0), end:Offset(2.0, 0.0))),
                       child: ScaleTransition(
@@ -125,75 +117,5 @@ class _HorizontalListWidgetState extends State<HorizontalListWidget> {
     }
     return result;
   }
-// int size = 150;
-// double getSize(int index){
-//   return size - 20 * (index +1);
-// }
-// double getScale(int index){
-//   return size / getSize(index +1);
-// }
+
 }
-//
-// class CardItem extends StatelessWidget {
-//   const CardItem({
-//     required this.animation,
-//     required this.item,
-//   });
-//
-//   final Animation<double> animation;
-//   final Image item;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.all(2.0),
-//       child: SizeTransition(
-//         sizeFactor: animation,
-//         child: Container(height: 50, child: item),
-//       ),
-//     );
-//
-//   }
-// }
-//
-//
-// typedef RemovedItemBuilder<T> = Widget Function(
-//     T item, BuildContext context, Animation<double> animation);
-// class ListModel<E> {
-//   ListModel({
-//     required this.listKey,
-//     required this.removedItemBuilder,
-//     Iterable<E>? initialItems,
-//   }) : _items = List<E>.from(initialItems ?? <E>[]);
-//
-//   final GlobalKey<AnimatedListState> listKey;
-//   final RemovedItemBuilder<E> removedItemBuilder;
-//   final List<E> _items;
-//
-//   AnimatedListState? get _animatedList => listKey.currentState;
-//
-//   void insert(E item) {
-//     int index =  _items.length;
-//     _items.insert(index, item);
-//     _animatedList!.insertItem(index);
-//   }
-//
-//   E removeAt(int index) {
-//     final E removedItem = _items.removeAt(index);
-//     if (removedItem != null) {
-//       _animatedList!.removeItem(
-//         index,
-//             (BuildContext context, Animation<double> animation) {
-//           return removedItemBuilder(removedItem, context, animation);
-//         },
-//       );
-//     }
-//     return removedItem;
-//   }
-//
-//   int get length => _items.length;
-//
-//   E operator [](int index) => _items[index];
-//
-//   int indexOf(E item) => _items.indexOf(item);
-// }

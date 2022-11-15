@@ -157,8 +157,6 @@ class _GameScreenState extends State<GameScreen>
                                         _controllerSize.reverse()
                                             .whenComplete(() {
                                           setState(() {
-                                            //sleep(Duration(seconds: 1));
-                                            //_showModalBottomSheet(context);
                                             isVisibleFinalButton = false;
                                             isVisibleButton = false;
                                           });
