@@ -20,6 +20,7 @@ class MyApp extends StatelessWidget {
       create: (context) => JackCubit(),
       child: MaterialApp(
         title: 'Black Jack',
+        debugShowCheckedModeBanner: false,
         home: StartScreen(),
         routes: {
           StartScreen.name: (context) => StartScreen(),

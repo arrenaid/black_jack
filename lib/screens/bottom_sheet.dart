@@ -63,76 +63,56 @@ class BottomSheetContent extends StatelessWidget {
 class BottomSheetSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    String result = "game.winner()";
+    // String result = "game.winner()";
     return BlocBuilder<JackCubit,JackState>(
       builder: (context,state) {
+        final BlackJackList game = state.blackJack;
+        List<Player> players = [];
+        players.add(game.dealer);
+        players.addAll(game.listPlayer);
+
         return Container(
           color: Colors.teal[300],
-          height: 300,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 70,
-                child: Center(
-                  child: Text( result,
-                    style: loseTS,
-                    textAlign: TextAlign.center,
+          height: MediaQuery.of(context).size.height/5,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                Container(
+                  height: 70,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  color: Colors.amber[200],
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Players: ${state.numberPlayers}",
+                        style: sampleTS,),
+                      Row(
+                        children: [
+                          MaterialButton(
+                            onPressed:  (){
+                              context.read<JackCubit>().changeNumberOfPlayers(--state.numberPlayers);
+                            },
+                            child: const Text("Remove", style: sampleTS),
+                            color: Colors.brown[300],
+                          ),
+                          MaterialButton(
+                            onPressed:  (){
+                              context.read<JackCubit>().changeNumberOfPlayers(++state.numberPlayers);
+                            },
+                            child: const Text("Insert", style: sampleTS),
+                            color: Colors.brown[300],
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              const Divider(thickness: 1),
-              Container(
-                height: 70,
-                alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                color: Colors.amber[200],
-                width: double.infinity,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Players: ${state.numberPlayers}",
-                      style: sampleTS,),
-                    Row(
-                      children: [
-                        MaterialButton(
-                          onPressed:  (){
-                            context.read<JackCubit>().changeNumberOfPlayers(--state.numberPlayers);
-                          },
-                          child: const Text("Remove", style: sampleTS),
-                          color: Colors.brown[300],
-                        ),
-                        MaterialButton(
-                          onPressed:  (){
-                            context.read<JackCubit>().changeNumberOfPlayers(++state.numberPlayers);
-                          },
-                          child: const Text("Insert", style: sampleTS),
-                          color: Colors.brown[300],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              const Divider(thickness: 1),
-              SizedBox(
-                height: 70,
-                child: Center(
-                  child: Text( result,
-                    style: loseTS,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              Container(
-                height: 30,
-                alignment: Alignment.center,
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                color: Colors.brown[200],
-                width: double.infinity,
-                child: Text("Score: ${state.score}",
-                  style: sampleTS,),
-              ),
-            ],
+
+              ],
+            ),
           ),
         );
       },

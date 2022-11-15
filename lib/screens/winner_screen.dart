@@ -31,6 +31,7 @@ class _WinnerScreenState extends State<WinnerScreen> {
               child:
               SingleChildScrollView(
                 scrollDirection: Axis.vertical,
+                physics: const BouncingScrollPhysics(),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -48,36 +49,38 @@ class _WinnerScreenState extends State<WinnerScreen> {
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: players.length,// game.listPlayer.length,
+                      itemCount: players.length,
                         itemBuilder: (context,index){
                       return Container(
                         height: 125,
+                        margin: EdgeInsets.symmetric(vertical: 2.5,horizontal: 5),
                         decoration: BoxDecoration(
+                            color: Colors.teal[400],
                             borderRadius: BorderRadius.circular(30),
                             border: Border.all(width: 3,
-                                color: Colors.greenAccent)),
+                                color: Colors.teal)
+                        ),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Column(
                               children: [
-                                Text(players[index].name,style: sampleTS),//Text(game.listPlayer[index].name,style: sampleTS),
-                                Text(players[index].score.toString(),style: sampleTS),
-                                Text(players[index].result,style: sampleTS),
-                                Text(players[index].sessionScore.toString(),style: sampleTS),
-                              ],
+                                Text(  " ${players[index].name} ${players[index].score.toString()} ${players[index].result}",style: sampleTS),
+                                Container(
+                                  alignment: Alignment.center,
+                                  width: MediaQuery.of(context).size.width * 0.9,
+                                  height: 80,
+                                  child: ListView.builder(
+                                    physics: BouncingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: players[index].cards.length,//game.listPlayer[index].cards.length,
+                                      itemBuilder: (context,item){
+                                        return Container(width: 50 ,  child: Image.asset(players[index].cards[item], fit: BoxFit.fitWidth,));
+                                      }),
+                                ),
+                               ],
                             ),
-                            ListView.builder(
-                            //physics: BouncingScrollPhysics(),
-                            shrinkWrap: true,
-                            //physics: ClampingScrollPhysics(),
-                                physics: PageScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: players[index].cards.length,//game.listPlayer[index].cards.length,
-                            itemBuilder: (context,item){
-                              return Container(width: 50 ,  child: Image.asset(players[index].cards[item], fit: BoxFit.fitWidth,));
-                            }),
-                            // Container(width: 50, child: Image.asset(game.listPlayer[index].cards.first)),
-
                           ],
                         ),
                       );
@@ -104,45 +107,6 @@ class _WinnerScreenState extends State<WinnerScreen> {
                         ],
                       ),
                     ),
-                    // Container(
-                    //   height: 30,
-                    //   alignment: Alignment.center,
-                    //   padding: EdgeInsets.symmetric(horizontal: 5),
-                    //   color: Colors.brown[200],
-                    //   width: double.infinity,
-                    //   child: Text("Score: $score",
-                    //     style: sampleTS,),
-                    // ),
-
-                    //const Divider(thickness: 1),
-                    // SizedBox(
-                    //   height: 25,
-                    //   child: Center(
-                    //     child: Text( result,
-                    //       style: loseTS,
-                    //       textAlign: TextAlign.center,
-                    //     ),
-                    //   ),
-                    // ),
-                    // Row(
-                    //   children: [
-                    //     Container(
-                    //       height: 100,
-                    //       alignment: Alignment.center,
-                    //       child: Image.asset("chip/chip500.png",),
-                    //     ),
-                    //     Container(
-                    //         height: 100,
-                    //         alignment: Alignment.center,
-                    //         child: Image.asset("chip/chip300.png",)
-                    //     ),
-                    //     Container(
-                    //         height: 100,
-                    //         alignment: Alignment.center,
-                    //         child: Image.asset("chip/chip100.png",)
-                    //     ),
-                    //   ],
-                    // ),
                   ],
                 ),
               ),

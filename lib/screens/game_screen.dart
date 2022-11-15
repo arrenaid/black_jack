@@ -1,4 +1,3 @@
-
 import 'package:black_jack/constants.dart';
 import 'package:black_jack/cubit/jack_cubit.dart';
 import 'package:black_jack/screens/horisontal_animated_list_view_widget.dart';
@@ -83,126 +82,130 @@ class _GameScreenState extends State<GameScreen>
           return Scaffold(
             backgroundColor: Colors.teal[200],
             body: SafeArea(
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ////DEALER
-                      HorizontalListWidget(
-                        cards: state.blackJack.dealer.cards,
-                        isDealer: true,
-                        finish: state.isFinish,
-                        controller: _controller,
-                      ),
-                      ////SCORE
-                      Container(
-                        padding: EdgeInsets.all(20),
-                        margin: EdgeInsets.all(5),
-                        child: FadeTransition(
-                          opacity:
-                          _controller.drive(Tween(begin: 1.0, end: 0.0)),
-                          child: Text(
-                            "${state.blackJack.dealer
-                                .score} - Dealer \n\t\t\t\t\t\t\tVS \n\t\t\t\t\tPlayer - ${state
-                                .blackJack.get().score}",
-                            style: state.blackJack.get().score > 21
-                                ? loseTS
-                                : sampleTS,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  physics: const BouncingScrollPhysics(),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ////DEALER
+                        HorizontalListWidget(
+                          cards: state.blackJack.dealer.cards,
+                          isDealer: true,
+                          finish: state.isFinish,
+                          controller: _controller,
+                        ),
+                        ////SCORE
+                        Container(
+                          padding: EdgeInsets.all(20),
+                          margin: EdgeInsets.all(5),
+                          child: FadeTransition(
+                            opacity:
+                            _controller.drive(Tween(begin: 1.0, end: 0.0)),
+                            child: Text(
+                              "${state.blackJack.dealer
+                                  .score} - Dealer \n\t\t\t\t\t\t\tVS \n\t\t\t\t\tPlayer - ${state
+                                  .blackJack.get().score}",
+                              style: state.blackJack.get().score > 21
+                                  ? loseTS
+                                  : sampleTS,
+                            ),
                           ),
                         ),
-                      ),
-                      ////PLAYER
-                      HorizontalListWidget(
-                        cards: state.blackJack.get().cards,
-                        isDealer: false,
-                        finish: state.isFinish,
-                        controller: _controller,
-                      ),
-                      SlideTransition(
-                        position: _controllerSize.drive(Tween(
-                            begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0))),
-                        child: IntrinsicWidth(
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              isVisibleButton ? MaterialButton(
-                                onPressed: () {
-                                  _controller.forward().whenComplete(() {
-                                    if (!state.isFinish) {
-                                      context.read<JackCubit>().hit(); //hit();
-                                    } else {
-                                      //sleep(Duration(seconds: 1));
-                                      setState(() {
-                                        isVisibleFinalButton = true;
-                                        //isGameStart = false;
-                                      });
-                                    }
-                                    _controller.reverse();
-                                  });
-                                },
-                                child: const Text(
-                                  "Hit",
-                                  style: sampleTS,
-                                ),
-                                color: Colors.brown[300],
-                              ) : Container(height: 30,),
-                              isVisibleFinalButton ? MaterialButton(
-                                onPressed: () {
-                                  _controller.forward().whenComplete(() {
-                                    _controller.reverse().whenComplete(() {
-                                      _controllerSize.reverse()
-                                          .whenComplete(() {
+                        ////PLAYER
+                        HorizontalListWidget(
+                          cards: state.blackJack.get().cards,
+                          isDealer: false,
+                          finish: state.isFinish,
+                          controller: _controller,
+                        ),
+                        SlideTransition(
+                          position: _controllerSize.drive(Tween(
+                              begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0))),
+                          child: IntrinsicWidth(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                isVisibleButton ? MaterialButton(
+                                  onPressed: () {
+                                    _controller.forward().whenComplete(() {
+                                      if (!state.isFinish) {
+                                        context.read<JackCubit>().hit(); //hit();
+                                      } else {
+                                        //sleep(Duration(seconds: 1));
                                         setState(() {
-                                          //sleep(Duration(seconds: 1));
-                                          //_showModalBottomSheet(context);
-                                          isVisibleFinalButton = false;
-                                          isVisibleButton = false;
+                                          isVisibleFinalButton = true;
+                                          //isGameStart = false;
                                         });
-                                        Navigator.pushReplacementNamed(
-                                            context, WinnerScreen.name);
-                                      });
+                                      }
+                                      _controller.reverse();
                                     });
-                                  });
-                                },
-                                child: const Text(
-                                  "...Finishing...",
-                                  style: sampleTS,
-                                ),
-                                color: Colors.deepOrange[300],
-                              ) : Container(),
-                              isVisibleButton ? MaterialButton(
-                                onPressed: () {
-                                  _controller.forward().whenComplete(() {
-                                    context.read<JackCubit>().stand();
-                                    _controller.reset();
-                                    _controller.reset();
-                                    _controller.fling().whenComplete(() {
+                                  },
+                                  child: const Text(
+                                    "Hit",
+                                    style: sampleTS,
+                                  ),
+                                  color: Colors.brown[300],
+                                ) : Container(height: 30,),
+                                isVisibleFinalButton ? MaterialButton(
+                                  onPressed: () {
+                                    _controller.forward().whenComplete(() {
                                       _controller.reverse().whenComplete(() {
                                         _controllerSize.reverse()
                                             .whenComplete(() {
                                           setState(() {
-                                            isVisibleFinalButton = true;
+                                            //sleep(Duration(seconds: 1));
+                                            //_showModalBottomSheet(context);
+                                            isVisibleFinalButton = false;
                                             isVisibleButton = false;
-                                            _controllerSize.forward();
+                                          });
+                                          Navigator.pushReplacementNamed(
+                                              context, WinnerScreen.name);
+                                        });
+                                      });
+                                    });
+                                  },
+                                  child: const Text(
+                                    "...Finishing...",
+                                    style: sampleTS,
+                                  ),
+                                  color: Colors.deepOrange[300],
+                                ) : Container(),
+                                isVisibleButton ? MaterialButton(
+                                  onPressed: () {
+                                    _controller.forward().whenComplete(() {
+                                      context.read<JackCubit>().stand();
+                                      _controller.reset();
+                                      _controller.reset();
+                                      _controller.fling().whenComplete(() {
+                                        _controller.reverse().whenComplete(() {
+                                          _controllerSize.reverse()
+                                              .whenComplete(() {
+                                            setState(() {
+                                              isVisibleFinalButton = true;
+                                              isVisibleButton = false;
+                                              _controllerSize.forward();
+                                            });
                                           });
                                         });
                                       });
                                     });
-                                  });
-                                },
-                                child: const Text(
-                                  "Stand",
-                                  style: sampleTS,
-                                ),
-                                color: Colors.amber[300],
-                              ) : Container(height: 30, width: 30,),
-                            ],
+                                  },
+                                  child: const Text(
+                                    "Stand",
+                                    style: sampleTS,
+                                  ),
+                                  color: Colors.amber[300],
+                                ) : Container(height: 30, width: 30,),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 )),
           );
