@@ -2,7 +2,7 @@ import 'package:black_jack/screens/game_screen.dart';
 import 'package:flutter/material.dart';
 import '../black_jack.dart';
 import '../constants.dart';
-import 'bottom_sheet.dart';
+import '../widget/bottom_sheet.dart';
 
 class StartScreen extends StatefulWidget {
   const StartScreen({Key? key}) : super(key: key);

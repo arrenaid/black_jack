@@ -55,7 +55,7 @@ class _HorizontalListWidgetState extends State<HorizontalListWidget> {
             : state.blackJack.get().cards);
           return Container(
             padding: EdgeInsets.only(left: 50.0),
-            height: 250,
+            height: MediaQuery.of(context).size.height * 3 / 10,
             alignment:
                 widget.isDealer ? Alignment.bottomCenter : Alignment.topCenter,
             child: Stack(

@@ -1,10 +1,12 @@
+import 'dart:ui';
 import 'package:black_jack/constants.dart';
 import 'package:black_jack/cubit/jack_cubit.dart';
-import 'package:black_jack/screens/horisontal_animated_list_view_widget.dart';
+import 'package:black_jack/widget/horisontal_animated_list_view_widget.dart';
 import 'package:black_jack/screens/winner_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../widget/top_panel_widget.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({Key? key}) : super(key: key);
@@ -85,10 +87,17 @@ class _GameScreenState extends State<GameScreen>
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   physics: const BouncingScrollPhysics(),
-                  child: Center(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.teal[300],
+                      borderRadius:  BorderRadius.circular(250),
+                      border: Border.all(width: 3, color: const Color(0xff26a69a))
+                    ),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
+                        ////TOP
+                        TopPanelWidget(),
                         ////DEALER
                         HorizontalListWidget(
                           cards: state.blackJack.dealer.cards,
@@ -100,6 +109,11 @@ class _GameScreenState extends State<GameScreen>
                         Container(
                           padding: EdgeInsets.all(20),
                           margin: EdgeInsets.all(5),
+                          //height: MediaQuery.of(context).size.height /10,
+                          decoration: BoxDecoration(
+                            color: Colors.red[800],
+                            borderRadius: BorderRadius.circular(dfltRadius),
+                          ),
                           child: FadeTransition(
                             opacity:
                             _controller.drive(Tween(begin: 1.0, end: 0.0)),
@@ -120,85 +134,98 @@ class _GameScreenState extends State<GameScreen>
                           finish: state.isFinish,
                           controller: _controller,
                         ),
-                        SlideTransition(
-                          position: _controllerSize.drive(Tween(
-                              begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0))),
-                          child: IntrinsicWidth(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                isVisibleButton ? MaterialButton(
-                                  onPressed: () {
-                                    _controller.forward().whenComplete(() {
-                                      if (!state.isFinish) {
-                                        context.read<JackCubit>().hit(); //hit();
-                                      } else {
-                                        //sleep(Duration(seconds: 1));
-                                        setState(() {
-                                          isVisibleFinalButton = true;
-                                          //isGameStart = false;
-                                        });
-                                      }
-                                      _controller.reverse();
-                                    });
-                                  },
-                                  child: const Text(
-                                    "Hit",
-                                    style: sampleTS,
-                                  ),
-                                  color: Colors.brown[300],
-                                ) : Container(height: 30,),
-                                isVisibleFinalButton ? MaterialButton(
-                                  onPressed: () {
-                                    _controller.forward().whenComplete(() {
-                                      _controller.reverse().whenComplete(() {
-                                        _controllerSize.reverse()
-                                            .whenComplete(() {
+                        ////BOTTOM
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height/10,
+                          decoration: BoxDecoration(
+                            color: Colors.red[800],
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(dfltRadius),
+                              topRight: Radius.circular(dfltRadius),
+                            ),
+                          ),
+                          child:
+                          SlideTransition(
+                            position: _controllerSize.drive(Tween(
+                                begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0))),
+                            child: IntrinsicWidth(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  isVisibleButton ? MaterialButton(
+                                    onPressed: () {
+                                      _controller.forward().whenComplete(() {
+                                        if (!state.isFinish) {
+                                          context.read<JackCubit>().hit(); //hit();
+                                        } else {
+                                          //sleep(Duration(seconds: 1));
                                           setState(() {
-                                            isVisibleFinalButton = false;
-                                            isVisibleButton = false;
+                                            isVisibleFinalButton = true;
+                                            //isGameStart = false;
                                           });
-                                          Navigator.pushReplacementNamed(
-                                              context, WinnerScreen.name);
-                                        });
+                                        }
+                                        _controller.reverse();
                                       });
-                                    });
-                                  },
-                                  child: const Text(
-                                    "...Finishing...",
-                                    style: sampleTS,
-                                  ),
-                                  color: Colors.deepOrange[300],
-                                ) : Container(),
-                                isVisibleButton ? MaterialButton(
-                                  onPressed: () {
-                                    _controller.forward().whenComplete(() {
-                                      context.read<JackCubit>().stand();
-                                      _controller.reset();
-                                      _controller.reset();
-                                      _controller.fling().whenComplete(() {
+                                    },
+                                    child: const Text(
+                                      "Hit",
+                                      style: sampleTS,
+                                    ),
+                                    color: Colors.brown[300],
+                                  ) : Container(height: 30,),
+                                  isVisibleFinalButton ? MaterialButton(
+                                    onPressed: () {
+                                      _controller.forward().whenComplete(() {
                                         _controller.reverse().whenComplete(() {
                                           _controllerSize.reverse()
                                               .whenComplete(() {
                                             setState(() {
-                                              isVisibleFinalButton = true;
+                                              isVisibleFinalButton = false;
                                               isVisibleButton = false;
-                                              _controllerSize.forward();
+                                            });
+                                            Navigator.pushReplacementNamed(
+                                                context, WinnerScreen.name);
+                                          });
+                                        });
+                                      });
+                                    },
+                                    child: const Text(
+                                      "...Finishing...",
+                                      style: sampleTS,
+                                    ),
+                                    color: Colors.deepOrange[300],
+                                  ) : Container(),
+                                  isVisibleButton ? MaterialButton(
+                                    onPressed: () {
+                                      _controller.forward().whenComplete(() {
+                                        context.read<JackCubit>().stand();
+                                        _controller.reset();
+                                        _controller.reset();
+                                        _controller.fling().whenComplete(() {
+                                          _controller.reverse().whenComplete(() {
+                                            _controllerSize.reverse()
+                                                .whenComplete(() {
+                                              setState(() {
+                                                isVisibleFinalButton = true;
+                                                isVisibleButton = false;
+                                                _controllerSize.forward();
+                                              });
                                             });
                                           });
                                         });
                                       });
-                                    });
-                                  },
-                                  child: const Text(
-                                    "Stand",
-                                    style: sampleTS,
-                                  ),
-                                  color: Colors.amber[300],
-                                ) : Container(height: 30, width: 30,),
-                              ],
+                                    },
+                                    child: const Text(
+                                      "Stand",
+                                      style: sampleTS,
+                                    ),
+                                    color: Colors.amber[300],
+                                  ) : Container(height: 30, width: 30,),
+                                ],
+                              ),
                             ),
                           ),
                         ),

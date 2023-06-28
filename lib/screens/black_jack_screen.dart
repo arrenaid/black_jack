@@ -1,11 +1,11 @@
 import 'package:black_jack/black_jack.dart';
 import 'package:black_jack/constants.dart';
 import 'package:black_jack/cubit/jack_cubit.dart';
-import 'package:black_jack/screens/horisontal_animated_list_view_widget.dart';
+import 'package:black_jack/widget/horisontal_animated_list_view_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'bottom_sheet.dart';
+import '../widget/bottom_sheet.dart';
 
 class BlackJackScreen extends StatefulWidget {
   const BlackJackScreen({Key? key}) : super(key: key);

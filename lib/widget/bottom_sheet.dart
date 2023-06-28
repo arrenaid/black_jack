@@ -1,8 +1,10 @@
 import 'package:black_jack/black_jack.dart';
+import 'package:black_jack/cubit/coin_bloc.dart';
 import 'package:black_jack/cubit/jack_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../constants.dart';
+import 'bet_widget.dart';
 
 class BottomSheetContent extends StatelessWidget {
   final BlackJackList game;
@@ -58,6 +60,7 @@ class BottomSheetContent extends StatelessWidget {
     );
   }
 }
+
 class BottomSheetSettings extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -70,7 +73,7 @@ class BottomSheetSettings extends StatelessWidget {
 
         return Container(
           color: Colors.teal[300],
-          height: MediaQuery.of(context).size.height/5,
+          height: MediaQuery.of(context).size.height/3,
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
@@ -107,6 +110,8 @@ class BottomSheetSettings extends StatelessWidget {
                     ],
                   ),
                 ),
+                const Divider(),
+                BetWidget(),
               ],
             ),
           ),

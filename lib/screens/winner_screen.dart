@@ -1,6 +1,8 @@
+import 'package:black_jack/cubit/coin_bloc.dart';
 import 'package:black_jack/cubit/jack_cubit.dart';
 import 'package:black_jack/screens/game_screen.dart';
 import 'package:black_jack/screens/start_screen.dart';
+import 'package:black_jack/widget/top_panel_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../black_jack.dart';
@@ -23,6 +25,7 @@ class _WinnerScreenState extends State<WinnerScreen> {
         List<Player> players = [];
         players.add(game.dealer);
         players.addAll(game.listPlayer);
+        context.read<CoinBloc>().add(FinishGame(game.get().result, players.length));
         return Scaffold(
           body: SafeArea(
             child: Container(
@@ -35,6 +38,7 @@ class _WinnerScreenState extends State<WinnerScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    const TopPanelWidget(),
                     Container(
                       height: 70,
                       alignment: Alignment.center,

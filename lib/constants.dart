@@ -11,3 +11,7 @@ const TextStyle loseTS = TextStyle(
   color: Colors.amberAccent,
   fontWeight: FontWeight.bold,
 );
+const double dfltRadius = 24;
+const String imgChip100 = "assets/chip/chip100.png";
+const String imgChip300 = "assets/chip/chip300.png";
+const String imgChip500 = "assets/chip/chip500.png";

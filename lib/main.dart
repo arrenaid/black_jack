@@ -1,3 +1,4 @@
+import 'package:black_jack/cubit/coin_bloc.dart';
 import 'package:black_jack/cubit/jack_cubit.dart';
 import 'package:black_jack/screens/game_screen.dart';
 import 'package:black_jack/screens/start_screen.dart';
@@ -14,8 +15,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<JackCubit>(
-      create: (context) => JackCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => JackCubit()),
+        BlocProvider(create: (context) => CoinBloc()),
+      ],
       child: MaterialApp(
         title: 'Black Jack',
         debugShowCheckedModeBanner: false,
@@ -29,4 +33,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
