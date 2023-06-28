@@ -25,7 +25,6 @@ class _WinnerScreenState extends State<WinnerScreen> {
         List<Player> players = [];
         players.add(game.dealer);
         players.addAll(game.listPlayer);
-        context.read<CoinBloc>().add(FinishGame(game.get().result, players.length));
         return Scaffold(
           body: SafeArea(
             child: Container(
@@ -45,7 +44,7 @@ class _WinnerScreenState extends State<WinnerScreen> {
                       padding: EdgeInsets.symmetric(horizontal: 5),
                       color: Colors.amber[200],
                       width: double.infinity,
-                      child: Text("Your result ${game.get().name} - ${game.get().result}",
+                      child: Text("Your result ${game.get().name} - ${game.get().result ?? 'no'}",
                         style: sampleTS,),
                     ),
                     const Divider(thickness: 1),

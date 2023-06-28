@@ -16,11 +16,12 @@ class CoinBloc extends Bloc<CoinEvent,CoinState>{
    on<FinishGame>(_onFinish);
   }
   _onFinish(FinishGame event, Emitter emit) {
-    double value = state.coin as double;
+    int value = state.coin;
     switch(event.result){
     case "Push!":
-      value += state.bet / 2;
+      value += state.bet;
       break;
+      case "MrPink Winner":
       case "You Winner":
         value += state.bet * event.index;
         break;
@@ -30,9 +31,8 @@ class CoinBloc extends Bloc<CoinEvent,CoinState>{
       case "Dealer Winner":
         default:value -= state.bet;
     }
-    int result = value as int;
-    _setCoinSP(result.toString());
-    emit(CoinState( result, state.bet, state.total));
+    _setCoinSP(value.toString());
+    emit(CoinState( value, state.bet, state.total));
   }
   _onLoad(LoadCoin event, Emitter emit) async {
     late int value;

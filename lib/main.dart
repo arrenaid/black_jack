@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => JackCubit()),
-        BlocProvider(create: (context) => CoinBloc()),
+        BlocProvider(create: (context) => CoinBloc()..add(LoadCoin())),
       ],
       child: MaterialApp(
         title: 'Black Jack',
