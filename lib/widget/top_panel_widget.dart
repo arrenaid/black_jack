@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:black_jack/cubit/coin_bloc.dart';
+import 'package:black_jack/widget/pannel_blure_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -41,8 +42,10 @@ class TopPanelWidget extends StatelessWidget {
                 ),
               ),
               Text(
-                'BlackJack',
+                '21',
                 style: loseTS,
+                maxLines: 2,
+                overflow: TextOverflow.fade,
               ),
               Container(
                 child: Wrap(
@@ -64,37 +67,5 @@ class TopPanelWidget extends StatelessWidget {
         ),
       );
     });
-  }
-}
-
-class PanelBlurWidget extends StatelessWidget {
-  const PanelBlurWidget({Key? key, required this.child, required this.padding})
-      : super(key: key);
-  final Widget child;
-  final double padding;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 10,
-      child: Padding(
-        padding: EdgeInsets.all(padding),
-        child: Container(
-          decoration: BoxDecoration(
-            //color: Colors.red[800],
-            borderRadius: BorderRadius.circular(dfltRadius),
-            border: Border.all(color: Colors.white, width: 1.5),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(dfltRadius),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: child,
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }

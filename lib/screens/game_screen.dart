@@ -2,13 +2,16 @@ import 'dart:ui';
 import 'package:black_jack/constants.dart';
 import 'package:black_jack/cubit/jack_cubit.dart';
 import 'package:black_jack/screens/start_screen.dart';
+import 'package:black_jack/widget/hit_button.dart';
 import 'package:black_jack/widget/horisontal_animated_list_view_widget.dart';
 import 'package:black_jack/screens/winner_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../black_jack.dart';
 import '../cubit/coin_bloc.dart';
 import '../widget/bottom_sheet.dart';
+import '../widget/pannel_blure_widget.dart';
 import '../widget/top_panel_widget.dart';
 
 class GameScreen extends StatefulWidget {
@@ -110,61 +113,70 @@ class _GameScreenState extends State<GameScreen>
                         ),
                         ////SCORE
                         Container(
-                          padding: EdgeInsets.all(10),
-                          margin: EdgeInsets.all(5),
-                          height: (MediaQuery.of(context).size.height *2/10)-50,
-                          decoration: BoxDecoration(
-                            color: Colors.red[800],
-                            borderRadius: BorderRadius.circular(dfltRadius),
-                          ),
-                          child: Stack(
-                            // mainAxisAlignment: MainAxisAlignment.center,
-                            // crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              if(state.blackJack.listPlayer.length > 1)...[
-                                Align(
-                                  alignment: const FractionalOffset(0.1,0.9),
-                                  child: SizedBox(
-                                    height: 25,
-                                    child: CircleAvatar(
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                        color: Colors.black,),
+                            padding: const EdgeInsets.all(10),
+                            margin: const EdgeInsets.all(5),
+                            height: (MediaQuery.of(context).size.height *2/10)-50,
+                            // decoration: BoxDecoration(
+                            //   color: Colors.red[800],
+                            //   borderRadius: BorderRadius.circular(dfltRadius),
+                            // ),
+                            child: OverflowBox(
+                              maxHeight: MediaQuery.of(context).size.height *2/10,
+                              child: Stack(
+                              // mainAxisAlignment: MainAxisAlignment.center,
+                              // crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                ///todo -> new animation restart and change screen
+                                // SlideTransition(
+                                //     position: _controllerSize.drive(Tween<Offset>(
+                                //         begin: const Offset(0.0, -1.0),
+                                //         end: const Offset(0.0, 2.0))),
+                                //     child: Image(image: BlackJack.coverCard.image,
+                                //       width:MediaQuery.of(context).size.width,)),
+                                if(state.blackJack.listPlayer.length > 1)...[
+                                  playersView(state.blackJack.listPlayer.length),
+                                ],
+
+                          Center(
+                            child: FadeTransition(
+                                    opacity:
+                                    _controller.drive(Tween(begin: 1.0, end: 0.0)),
+                                    child: Text(
+                                      "${state.blackJack.dealer
+                                          .score} - Dealer \n\t\t\t\t\t\t\tVS \n\t\t\t\t\tPlayer - ${state
+                                          .blackJack.get().score}",
+                                      style: state.blackJack.get().score > 21
+                                          ? loseTS
+                                          : sampleTS,
                                     ),
                                   ),
-                                )
-                              ],
-                              if(!isVisibleFinalButton)...[
-                        Center(
-                          child: FadeTransition(
-                                  opacity:
-                                  _controller.drive(Tween(begin: 1.0, end: 0.0)),
-                                  child: Text(
-                                    "${state.blackJack.dealer
-                                        .score} - Dealer \n\t\t\t\t\t\t\tVS \n\t\t\t\t\tPlayer - ${state
-                                        .blackJack.get().score}",
-                                    style: state.blackJack.get().score > 21
-                                        ? loseTS
-                                        : sampleTS,
+                          ),
+                                
+                                if(isVisibleFinalButton)...[
+                                  ScaleTransition(
+                                    scale: _controllerSize.drive(Tween(begin: 3.0, end: 1.0)),
+                                    child: FadeTransition(
+                                      opacity: _controllerSize.drive(Tween(begin: 0.0, end: 1.0)),
+                                      child: SlideTransition(
+                                        position: _controllerSize.drive(Tween(
+                                            begin: Offset(0.0, -1.0), end: Offset(0.0, 0.0))),
+                                        child: Center(
+                                          child: PanelBlurWidget(
+                                            padding: 10,
+                                            color: clrPlayer[0],
+                                            child: Center(
+                                              child: Text(state.blackJack.get().result ?? '',
+                                              style: sampleTS,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                        ),
+                                ],
                               ],
-                              if(isVisibleFinalButton)...[
-                                Center(
-                                  child: SlideTransition(
-                                  position: _controllerSize.drive(Tween(
-                                      begin: Offset(0.0, 1.0),
-                                      end: Offset(0.0, 0.0))),
-                                  child: Text(
-                                    state.blackJack.get().result ?? '',
-                                    style: sampleTS,
-                                  ),
-                                  ),
-                                ),
-                              ],
-                            ],
+                            ),
                           ),
                         ),
                         ////PLAYER
@@ -176,103 +188,64 @@ class _GameScreenState extends State<GameScreen>
                         ),
                         ////BOTTOM
                         PanelBlurWidget(
-                          padding: 8,
+                          padding: 2,
                           child: SlideTransition(
                             position: _controllerSize.drive(Tween(
                                 begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0))),
-                            child: IntrinsicWidth(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  if(isVisibleButton)...[
-                                    MaterialButton(
-                                    onPressed: () {
-                                      _controller.forward().whenComplete(() {
-                                        if (!state.isFinish) {
-                                          context.read<JackCubit>().hit(); //hit();
-                                        } else {
-                                          //sleep(Duration(seconds: 1));
-                                          setState(() {
-                                            isVisibleFinalButton = true;
-                                            //isGameStart = false;
-                                          });
-                                        }
-                                        _controller.reverse();
-                                      });
-                                    },
-                                    child: const Text(
-                                      "Hit",
-                                      style: sampleTS,
-                                    ),
-                                    color: Colors.brown[300],
-                                  ),
-                                    MaterialButton(
-                                      onPressed: () {
-                                        _controller.forward().whenComplete(() {
-                                          context.read<JackCubit>().stand();
-                                          context.read<CoinBloc>().add(
-                                              FinishGame(state.blackJack.get().result,
-                                                  state.blackJack.listPlayer.length + 1));
-                                          _controller.reset();
-                                          _controller.reset();
-                                          _controller.fling().whenComplete(() {
-                                            _controller.reverse().whenComplete(() {
-                                              _controllerSize.reverse()
-                                                  .whenComplete(() {
-                                                setState(() {
-                                                  isVisibleFinalButton = true;
-                                                  isVisibleButton = false;
-                                                  _controllerSize.forward();
-                                                });
-                                              });
-                                            });
-                                          });
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                if(isVisibleButton)...[
+                                  HitButton( label: "Hit",
+                                    color: Colors.brown,//brown[300]
+                                  execute: () {
+                                    _controller.forward().whenComplete(() {
+                                      if (!state.isFinish) {
+                                        context.read<JackCubit>().hit(); //hit();
+                                      } else {
+                                        //sleep(Duration(seconds: 1));
+                                        setState(() {
+                                          isVisibleFinalButton = true;
+                                          //isGameStart = false;
                                         });
-                                      },
-                                      child: const Text(
-                                        "Stand",
-                                        style: sampleTS,
-                                      ),
-                                      color: Colors.amber[300],
-                                    ),
-                                  ],
-                                  if(isVisibleFinalButton)...[
-                                    MaterialButton(
-                                      onPressed:  (){
-
-                                        _controller.forward().whenComplete(() {
+                                      }
+                                      _controller.reverse();
+                                    });
+                                  },
+                                ),
+                                  HitButton( label:"Stand",
+                                    color: Colors.amber,
+                                    execute: () {
+                                      _controller.forward().whenComplete(() {
+                                        context.read<JackCubit>().stand();
+                                        context.read<CoinBloc>().add(
+                                            FinishGame(state.blackJack.get().result,
+                                                state.blackJack.listPlayer.length + 1));
+                                        _controller.reset();
+                                        _controller.reset();
+                                        _controller.fling().whenComplete(() {
                                           _controller.reverse().whenComplete(() {
                                             _controllerSize.reverse()
                                                 .whenComplete(() {
                                               setState(() {
-                                                isVisibleFinalButton = false;
+                                                isVisibleFinalButton = true;
                                                 isVisibleButton = false;
+                                                _controllerSize.forward();
                                               });
-                                              Navigator.pushReplacementNamed(context, GameScreen.name);
                                             });
                                           });
                                         });
-                                      },
-                                      child: const Text("Start", style: sampleTS),
-                                      color: Colors.amber[300],
-                                    ),
-                                    MaterialButton(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 30),
-                                      elevation: 15,
-                                      onPressed: (){
-                                        showModalBottomSheet(
-                                            context: context,
-                                            builder: (context) => BottomSheetSettings());
-                                      },
-                                      child:
-                                      const Text("SettingS", style: sampleTS),
-                                      color: Colors.amber[300],
-                                    ),
-                                    MaterialButton(
-                                    onPressed: () {
+                                      });
+                                    },
+
+                                  ),
+                                ],
+                                if(isVisibleFinalButton)...[
+                                  HitButton(label:"Start",
+                                    color: Colors.amber,
+                                    execute:  (){
                                       _controller.forward().whenComplete(() {
                                         _controller.reverse().whenComplete(() {
                                           _controllerSize.reverse()
@@ -281,20 +254,40 @@ class _GameScreenState extends State<GameScreen>
                                               isVisibleFinalButton = false;
                                               isVisibleButton = false;
                                             });
-                                            Navigator.pushReplacementNamed(
-                                                context, WinnerScreen.name);
+                                            Navigator.pushReplacementNamed(context, GameScreen.name);
                                           });
                                         });
                                       });
                                     },
-                                    child: const Text(
-                                      "Score",
-                                      style: sampleTS,
-                                    ),
-                                    color: Colors.deepOrange[300],
-                                  )],
-                                ],
-                              ),
+                                  ),
+                                  HitButton(label:"bet",
+                                    color: clrPlayer[4],
+                                    execute: (){
+                                      showModalBottomSheet(
+                                          context: context,
+                                          builder: (context) => BottomSheetSettings());
+                                    },
+                                  ),
+                                  HitButton(label: "Score",
+                                    color: Colors.deepOrange,
+                                  execute: () {
+                                    _controller.forward().whenComplete(() {
+                                      _controller.reverse().whenComplete(() {
+                                        _controllerSize.reverse()
+                                            .whenComplete(() {
+                                          setState(() {
+                                            isVisibleFinalButton = false;
+                                            isVisibleButton = false;
+                                          });
+                                          Navigator.pushReplacementNamed(
+                                              context, WinnerScreen.name);
+                                        });
+                                      });
+                                    });
+                                  },
+
+                                ),],
+                              ],
                             ),
                           ),
                         ),
@@ -305,4 +298,29 @@ class _GameScreenState extends State<GameScreen>
           );
         });
   }
+
+  Widget playersView(int length) {
+    return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      itemCount: length,
+      itemBuilder: (context ,index) {
+          return Align(
+            alignment: FractionalOffset(
+                0.9,
+                0.5
+            ),
+            child: FadeTransition(
+                opacity:
+                _controller.drive(Tween(begin: 1.0, end: 0.0)),
+                child: Image.asset(
+                imgChip100, height: 25, color: clrPlayer[index],),
+            ),
+          );
+
+      }
+    );
+
+  }
+
+
 }

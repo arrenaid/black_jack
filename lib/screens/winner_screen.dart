@@ -2,6 +2,7 @@ import 'package:black_jack/cubit/coin_bloc.dart';
 import 'package:black_jack/cubit/jack_cubit.dart';
 import 'package:black_jack/screens/game_screen.dart';
 import 'package:black_jack/screens/start_screen.dart';
+import 'package:black_jack/widget/hit_button.dart';
 import 'package:black_jack/widget/top_panel_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -58,7 +59,8 @@ class _WinnerScreenState extends State<WinnerScreen> {
                         height: 125,
                         margin: EdgeInsets.symmetric(vertical: 2.5,horizontal: 5),
                         decoration: BoxDecoration(
-                            color: Colors.teal[400],
+                            color: index ==0 ? Colors.teal[200]
+                                :clrPlayer[index -1],
                             borderRadius: BorderRadius.circular(30),
                             border: Border.all(width: 3,
                                 color: Colors.teal)
@@ -88,28 +90,25 @@ class _WinnerScreenState extends State<WinnerScreen> {
                         ),
                       );
                     }),
-                    const Divider(thickness: 1),
-                    Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          MaterialButton(
-                            onPressed:  (){
-                              Navigator.pushReplacementNamed(context, GameScreen.name);
-                            },
-                            child: const Text("New Game", style: sampleTS),
-                            color: Colors.deepOrange[300],
-                          ),
-                          MaterialButton(
-                            onPressed:  (){
-                              Navigator.pushReplacementNamed(context, StartScreen.name);
-                            },
-                            child: const Text("Start", style: sampleTS),
-                            color: Colors.amber[300],
-                          ),
-                        ],
-                      ),
+                    const SizedBox(height: 25),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        HitButton(
+                          execute:  () => Navigator.pushReplacementNamed(context, GameScreen.name),
+                          label: "New Game",
+                          color: Colors.deepOrange,
+                        ),
+                        HitButton(
+                          execute:  (){
+                            Navigator.pushReplacementNamed(context, StartScreen.name);
+                          },
+                          label:"Start Screen",
+                          color: Colors.amber,
+                        ),
+                      ],
                     ),
+                    const SizedBox(height: 25),
                   ],
                 ),
               ),
