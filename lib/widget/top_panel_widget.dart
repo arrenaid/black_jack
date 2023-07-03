@@ -1,10 +1,7 @@
-import 'dart:ui';
-
 import 'package:black_jack/cubit/coin_bloc.dart';
 import 'package:black_jack/widget/pannel_blure_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../constants.dart';
 
 class TopPanelWidget extends StatelessWidget {
@@ -41,12 +38,12 @@ class TopPanelWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              Text(
-                '21',
-                style: tsLose,
-                maxLines: 2,
-                overflow: TextOverflow.fade,
-              ),
+              // const Text(
+              //   '21',
+              //   style: tsLose,
+              //   maxLines: 2,
+              //   overflow: TextOverflow.fade,
+              // ),
               Container(
                 child: Wrap(
                   direction: Axis.vertical,

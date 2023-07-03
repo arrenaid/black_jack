@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:black_jack/constants.dart';
 import 'package:black_jack/cubit/jack_cubit.dart';
-import 'package:black_jack/screens/start_screen.dart';
 import 'package:black_jack/widget/bottom_sheet_bet.dart';
 import 'package:black_jack/widget/hit_button.dart';
 import 'package:black_jack/widget/horisontal_animated_list_view_widget.dart';
@@ -9,9 +8,7 @@ import 'package:black_jack/screens/winner_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../black_jack.dart';
 import '../cubit/coin_bloc.dart';
-import '../widget/bottom_sheet.dart';
 import '../widget/pannel_blure_widget.dart';
 import '../widget/top_panel_widget.dart';
 
@@ -81,7 +78,7 @@ class _GameScreenState extends State<GameScreen>
     _controllerSize.dispose();
     super.dispose();
   }
-
+  double turn = 3/4;
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +119,7 @@ class _GameScreenState extends State<GameScreen>
                             //   borderRadius: BorderRadius.circular(dfltRadius),
                             // ),
                             child: OverflowBox(
-                              maxHeight: MediaQuery.of(context).size.height *2/10,
+                              maxHeight: MediaQuery.of(context).size.height, //*2/10,
                               child: Stack(
                               // mainAxisAlignment: MainAxisAlignment.center,
                               // crossAxisAlignment: CrossAxisAlignment.center,
@@ -138,21 +135,61 @@ class _GameScreenState extends State<GameScreen>
                                   playersView(state.blackJack.listPlayer.length),
                                 ],
 
-                          Center(
-                            child: FadeTransition(
-                                    opacity:
-                                    _controller.drive(Tween(begin: 1.0, end: 0.0)),
-                                    child: Text(
-                                      "${state.blackJack.dealer
-                                          .score} - Dealer \n\t\t\t\t\t\t\tVS \n\t\t\t\t\tPlayer - ${state
-                                          .blackJack.get().score}",
-                                      style: state.blackJack.get().score > 21
-                                          ? tsLose
-                                          : tsSample,
+                          FadeTransition(
+                                  opacity:
+                                  _controller.drive(Tween(begin: 1.0, end: 0.0)),
+                                  child:
+                                  Center(
+                                    child: RichText(
+                                      text: TextSpan(
+                                        text: '\t\t\t\t\t\t\t\t\t\t\t\t',
+                                        style: tsDealer,
+                                        children: <TextSpan>[
+                                      TextSpan(
+                                      text: '${state.blackJack.dealer.score}',
+                                        style:  state.blackJack.dealer.score < 21
+                                            ? tsDealer
+                                            : state.blackJack.dealer.score == 21
+                                            ? tsLose
+                                            : tsLoseLine.copyWith(color: Colors.teal[800])
+                                        ,),
+                                          const TextSpan(text: '\n\n',
+                                              style: tsSample),
+                                          TextSpan(text: '${state.blackJack.get().score}',
+                                              style: state.blackJack.get().score < 21
+                                              ? tsPink
+                                                  : state.blackJack.get().score == 21
+                                                  ? tsLose
+                                                  :tsLoseLine
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                          ),
-                                
+                                ),
+                if(isVisibleFinalButton && state.blackJack.get().result !='Lose')...[
+          FadeTransition(
+          opacity:
+          _controllerSize.drive(Tween(begin: 0.0, end: 1.0)),
+          child: Center(
+          child: AnimatedRotation(
+          duration: const Duration(seconds:3),
+          turns: turn,
+          onEnd: () {
+          setState(() {
+          turn = turn == 0 ? 1/4 : 0;
+          });
+          },
+          curve: Curves.fastOutSlowIn,
+          child: Image.asset(
+          imgConf,
+          scale: 4,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          ),
+          ),
+          ),
+          ),],
                                 if(isVisibleFinalButton)...[
                                   ScaleTransition(
                                     scale: _controllerSize.drive(Tween(begin: 3.0, end: 1.0)),
@@ -160,14 +197,15 @@ class _GameScreenState extends State<GameScreen>
                                       opacity: _controllerSize.drive(Tween(begin: 0.0, end: 1.0)),
                                       child: SlideTransition(
                                         position: _controllerSize.drive(Tween(
-                                            begin: Offset(0.0, -1.0), end: Offset(0.0, 0.0))),
+                                            begin: const Offset(0.0, -1.0),
+                                            end: const Offset(0.0, 0.0))),
                                         child: Center(
                                           child: PanelBlurWidget(
                                             padding: 10,
-                                            color: clrs[0],
+                                            color: clrMrPink,
                                             child: Center(
                                               child: Text(state.blackJack.get().result ?? '',
-                                              style: tsSample,
+                                              style: tsWin,
                                               ),
                                             ),
                                           ),
@@ -192,7 +230,8 @@ class _GameScreenState extends State<GameScreen>
                           padding: 2,
                           child: SlideTransition(
                             position: _controllerSize.drive(Tween(
-                                begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0))),
+                                begin: const Offset(0.0, 1.0),
+                                end: const Offset(0.0, 0.0))),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -233,7 +272,13 @@ class _GameScreenState extends State<GameScreen>
                                               setState(() {
                                                 isVisibleFinalButton = true;
                                                 isVisibleButton = false;
-                                                _controllerSize.forward();
+                                                turn = 1/4 ;
+                                                _controllerSize.forward().whenComplete(() {
+                                                  setState(() {
+                                                    turn = 4/5 ;
+                                                  });
+
+                                                });
                                               });
                                             });
                                           });

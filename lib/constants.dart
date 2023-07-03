@@ -11,16 +11,44 @@ const TextStyle tsBetOrange = TextStyle(
   //fontWeight: FontWeight.bold,
   color: clrMrOrange,
 );
+const TextStyle tsPink = TextStyle(
+  fontFamily: "MarkoOne",
+  fontSize: 50,
+  //fontWeight: FontWeight.bold,
+  color: clrMrPink,
+);
+const TextStyle tsWin = TextStyle(
+  fontFamily: "MarkoOne",
+  fontSize: 35,
+  //fontWeight: FontWeight.bold,
+  color: Colors.amber,
+);
 const TextStyle tsLose = TextStyle(
-  fontFamily: "Podkova",
-  fontSize: 25,
-  color: Colors.amberAccent,
+  fontFamily: "MarkoOne",//"Podkova",
+  fontSize: 50,
+  color: Colors.amber,
   fontWeight: FontWeight.bold,
 );
+const TextStyle tsDealer = TextStyle(
+  fontFamily: "MarkoOne",
+  fontSize: 50,
+  color: Color(0xFF004D40),
+
+);
+const TextStyle tsLoseLine = TextStyle(
+    fontFamily: "MarkoOne",
+    fontSize: 50,
+    color: clrMrPink,
+    decoration: TextDecoration.lineThrough,
+    decorationColor: Colors.white,
+    decorationStyle: TextDecorationStyle.wavy
+);
+
 const double dfltRadius = 15;
 const String imgChip100 = "assets/chip/chip100.png";
 const String imgChip300 = "assets/chip/chip300.png";
 const String imgChip500 = "assets/chip/chip500.png";
+const String imgConf = "assets/chip/conf.png";
 
 //"MrPink" , "MrWhite" , "MrOrange", "MrBrown", "MrBlue", "MrBlonde"
 const Color clrMrPink = Color(0xFFFF2171);

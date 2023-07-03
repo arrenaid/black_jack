@@ -34,6 +34,7 @@ class BottomSheetSettings extends StatelessWidget {
           color: Colors.teal[100],
           height: MediaQuery.of(context).size.height / 2,
           child: ListView(
+            physics: const BouncingScrollPhysics(),
             children: [
               Container(
                 height: MediaQuery.of(context).size.width / 6,
@@ -95,21 +96,26 @@ class BottomSheetSettings extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: MediaQuery.of(context).size.width ,
+                //width: MediaQuery.of(context).size.width ,
                 height: 70,
-                child: HitButton(
-                    color: clrMrBlue,
-                    execute: () => BottomSheetBet.show(context),
-                    label: 'Change Bet'),
+                child: Row(
+                  children: [
+                    HitButton(
+                        color: clrMrBlue,
+                        execute: () => BottomSheetBet.show(context),
+                        label: 'Change Bet'),
+                    HitButton(
+                        color: clrMrBlonde,
+                        execute: () => Navigator.of(context).pop(),
+                        label: 'OK'),
+                  ],
+                ),
               ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 70,
-                child: HitButton(
-                    color: clrMrBlonde,
-                    execute: () => Navigator.of(context).pop(),
-                    label: 'OK'),
-              )
+              // SizedBox(
+              //   width: MediaQuery.of(context).size.width,
+              //   height: 70,
+              //   child:
+              // )
             ],
           ),
         );
