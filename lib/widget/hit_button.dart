@@ -1,7 +1,5 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-
 import '../constants.dart';
 
 class HitButton extends StatelessWidget {
@@ -27,19 +25,19 @@ class HitButton extends StatelessWidget {
           onPressed: execute,
           child: Text(
             label,
-            style: sampleTS.copyWith(color: Colors.black),
+            style: tsSample.copyWith(color: Colors.black),
           ),
           style: ButtonStyle(
             // fixedSize: MaterialStateProperty.all(
             //     Size(MediaQuery.of(context).size.width, 60)),
            //padding: MaterialStateProperty.all(const EdgeInsets.all(20)),
             minimumSize:  MaterialStateProperty.all(const Size(100,60)),
-            elevation: MaterialStateProperty.all(2),
+            elevation: MaterialStateProperty.all(5),
             backgroundColor: MaterialStateProperty.all(color),
             overlayColor: MaterialStateProperty.all(Colors.teal[800]),
-              animationDuration: Duration(milliseconds: 5000),
+              animationDuration: const Duration(milliseconds: 5000),
             visualDensity: VisualDensity.adaptivePlatformDensity,
-            shadowColor: MaterialStateProperty.all(Colors.red),
+            shadowColor: MaterialStateProperty.all(Colors.teal[800]),
             shape: MaterialStateProperty.all(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(dfltRadius),

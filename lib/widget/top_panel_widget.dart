@@ -32,18 +32,18 @@ class TopPanelWidget extends StatelessWidget {
                   children: [
                     Text(
                       'Bet: ',
-                      style: sampleTS.copyWith(color: Colors.teal[800]),
+                      style: tsSample.copyWith(color: Colors.teal[800]),
                     ),
                     Text(
                       state.bet.toString(),
-                      style: sampleTS,
+                      style: tsSample,
                     ),
                   ],
                 ),
               ),
               Text(
                 '21',
-                style: loseTS,
+                style: tsLose,
                 maxLines: 2,
                 overflow: TextOverflow.fade,
               ),
@@ -53,11 +53,11 @@ class TopPanelWidget extends StatelessWidget {
                   children: [
                     Text(
                       'Coin: ',
-                      style: sampleTS.copyWith(color: Colors.teal[800]),
+                      style: tsSample.copyWith(color: Colors.teal[800]),
                     ),
                     Text(
                       state.coin.toString(),
-                      style: sampleTS,
+                      style: tsSample,
                     ),
                   ],
                 ),

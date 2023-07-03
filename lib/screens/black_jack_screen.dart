@@ -108,7 +108,7 @@ class BlackJackScreenState extends State<BlackJackScreen>
                             elevation: 15,
                             onPressed: startGame,
                             child:
-                                const Text("Start Black Jack", style: sampleTS),
+                                const Text("Start Black Jack", style: tsSample),
                             color: Colors.brown[300],
                           ),
                         ),
@@ -147,8 +147,8 @@ class BlackJackScreenState extends State<BlackJackScreen>
                             child: Text(
                               "${state.blackJack.dealer.score} - Dealer \n\t\t\t\t\t\t\tVS \n\t\t\t\t\tPlayer - ${state.blackJack.get().score}",
                               style: state.blackJack.get().score > 21
-                                  ? loseTS
-                                  : sampleTS,
+                                  ? tsLose
+                                  : tsSample,
                             ),
                           ),
                         ),
@@ -186,7 +186,7 @@ class BlackJackScreenState extends State<BlackJackScreen>
                                   },
                                   child: const Text(
                                     "Hit",
-                                    style: sampleTS,
+                                    style: tsSample,
                                   ),
                                   color: Colors.brown[300],
                                 ) : Container(height: 30,),
@@ -208,7 +208,7 @@ class BlackJackScreenState extends State<BlackJackScreen>
                                   },
                                   child: const Text(
                                     "...Finishing...",
-                                    style: sampleTS,
+                                    style: tsSample,
                                   ),
                                   color: Colors.deepOrange[300],
                                 ) : Container(),
@@ -234,7 +234,7 @@ class BlackJackScreenState extends State<BlackJackScreen>
                                   },
                                   child: const Text(
                                     "Stand",
-                                    style: sampleTS,
+                                    style: tsSample,
                                   ),
                                   color: Colors.amber[300],
                                 ) : Container(height: 30, width: 30,),

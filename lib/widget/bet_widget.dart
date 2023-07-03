@@ -59,7 +59,7 @@ class BetWidget extends StatelessWidget {
                     context.read<CoinBloc>().add(ChangeCoin(state.coin + 10));
                     context.read<CoinBloc>().add(ChangeBet(state.bet - 10));
                   },
-                  child: const Text("Remove", style: sampleTS),
+                  child: const Text("Remove", style: tsSample),
                   color: Colors.brown[300],
                 ),
                 MaterialButton(
@@ -67,7 +67,7 @@ class BetWidget extends StatelessWidget {
                     context.read<CoinBloc>().add(ChangeCoin(state.coin - 10));
                     context.read<CoinBloc>().add(ChangeBet(state.bet + 10));
                   },
-                  child: const Text("Insert", style: sampleTS),
+                  child: const Text("Insert", style: tsSample),
                   color: Colors.brown[300],
                 ),
               ],

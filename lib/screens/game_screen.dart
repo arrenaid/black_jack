@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:black_jack/constants.dart';
 import 'package:black_jack/cubit/jack_cubit.dart';
 import 'package:black_jack/screens/start_screen.dart';
+import 'package:black_jack/widget/bottom_sheet_bet.dart';
 import 'package:black_jack/widget/hit_button.dart';
 import 'package:black_jack/widget/horisontal_animated_list_view_widget.dart';
 import 'package:black_jack/screens/winner_screen.dart';
@@ -146,8 +147,8 @@ class _GameScreenState extends State<GameScreen>
                                           .score} - Dealer \n\t\t\t\t\t\t\tVS \n\t\t\t\t\tPlayer - ${state
                                           .blackJack.get().score}",
                                       style: state.blackJack.get().score > 21
-                                          ? loseTS
-                                          : sampleTS,
+                                          ? tsLose
+                                          : tsSample,
                                     ),
                                   ),
                           ),
@@ -163,10 +164,10 @@ class _GameScreenState extends State<GameScreen>
                                         child: Center(
                                           child: PanelBlurWidget(
                                             padding: 10,
-                                            color: clrPlayer[0],
+                                            color: clrs[0],
                                             child: Center(
                                               child: Text(state.blackJack.get().result ?? '',
-                                              style: sampleTS,
+                                              style: tsSample,
                                               ),
                                             ),
                                           ),
@@ -243,7 +244,7 @@ class _GameScreenState extends State<GameScreen>
                                   ),
                                 ],
                                 if(isVisibleFinalButton)...[
-                                  HitButton(label:"Start",
+                                  HitButton(label:"Ok",
                                     color: Colors.amber,
                                     execute:  (){
                                       _controller.forward().whenComplete(() {
@@ -260,13 +261,9 @@ class _GameScreenState extends State<GameScreen>
                                       });
                                     },
                                   ),
-                                  HitButton(label:"bet",
-                                    color: clrPlayer[4],
-                                    execute: (){
-                                      showModalBottomSheet(
-                                          context: context,
-                                          builder: (context) => BottomSheetSettings());
-                                    },
+                                  HitButton(label:"Bet",
+                                    color: clrs[4],
+                                    execute: () => BottomSheetBet.show(context),
                                   ),
                                   HitButton(label: "Score",
                                     color: Colors.deepOrange,
@@ -305,7 +302,7 @@ class _GameScreenState extends State<GameScreen>
       itemCount: length,
       itemBuilder: (context ,index) {
           return Align(
-            alignment: FractionalOffset(
+            alignment: const FractionalOffset(
                 0.9,
                 0.5
             ),
@@ -313,7 +310,7 @@ class _GameScreenState extends State<GameScreen>
                 opacity:
                 _controller.drive(Tween(begin: 1.0, end: 0.0)),
                 child: Image.asset(
-                imgChip100, height: 25, color: clrPlayer[index],),
+                imgChip100, height: 25, color: clrs[index],),
             ),
           );
 

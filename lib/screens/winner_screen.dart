@@ -46,7 +46,7 @@ class _WinnerScreenState extends State<WinnerScreen> {
                       color: Colors.amber[200],
                       width: double.infinity,
                       child: Text("Your result ${game.get().name} - ${game.get().result ?? 'no'}",
-                        style: sampleTS,),
+                        style: tsSample,),
                     ),
                     const Divider(thickness: 1),
                     ListView.builder(
@@ -60,7 +60,7 @@ class _WinnerScreenState extends State<WinnerScreen> {
                         margin: EdgeInsets.symmetric(vertical: 2.5,horizontal: 5),
                         decoration: BoxDecoration(
                             color: index ==0 ? Colors.teal[200]
-                                :clrPlayer[index -1],
+                                :clrs[index -1],
                             borderRadius: BorderRadius.circular(30),
                             border: Border.all(width: 3,
                                 color: Colors.teal)
@@ -70,7 +70,7 @@ class _WinnerScreenState extends State<WinnerScreen> {
                           children: [
                             Column(
                               children: [
-                                Text(  " ${players[index].name} ${players[index].score.toString()} ${players[index].result}",style: sampleTS),
+                                Text(  " ${players[index].name} ${players[index].score.toString()} ${players[index].result}",style: tsSample),
                                 Container(
                                   alignment: Alignment.center,
                                   width: MediaQuery.of(context).size.width * 0.9,
@@ -91,22 +91,15 @@ class _WinnerScreenState extends State<WinnerScreen> {
                       );
                     }),
                     const SizedBox(height: 25),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        HitButton(
-                          execute:  () => Navigator.pushReplacementNamed(context, GameScreen.name),
-                          label: "New Game",
-                          color: Colors.deepOrange,
-                        ),
-                        HitButton(
-                          execute:  (){
-                            Navigator.pushReplacementNamed(context, StartScreen.name);
-                          },
-                          label:"Start Screen",
-                          color: Colors.amber,
-                        ),
-                      ],
+                    SizedBox(
+                      height: 70,
+                      child: HitButton(
+                        execute:  (){
+                          Navigator.pushReplacementNamed(context, StartScreen.name);
+                        },
+                        label:"Start Screen",
+                        color: Colors.amber,
+                      ),
                     ),
                     const SizedBox(height: 25),
                   ],
